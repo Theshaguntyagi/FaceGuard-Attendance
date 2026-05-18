@@ -1,0 +1,83 @@
+==================================================
+  FaceGuard Attendance — Setup Guide (Windows)
+==================================================
+
+PREREQUISITES
+-------------
+1. Python 3.10 or 3.11
+   Download: https://www.python.org/downloads/
+
+2. A webcam.
+
+(No CMake / Visual Studio / dlib needed — FaceGuard uses DeepFace + TensorFlow
+ pre-built wheels for the ArcFace model.)
+
+
+INSTALLATION
+------------
+Step 1 — Create and activate a virtual environment:
+    python -m venv venv
+    venv\Scripts\activate
+
+Step 2 — Upgrade pip and install dependencies:
+    python -m pip install --upgrade pip
+    pip install -r requirements.txt
+
+  The first install pulls TensorFlow (~350 MB) — be patient.
+
+
+QUICK START
+-----------
+GUI (default):
+    python main.py
+
+CLI (legacy text menu):
+    python main.py --cli
+
+Direct CLI scripts:
+    python register.py --name "Alice"
+    python recognize.py
+    python report.py
+
+
+USING THE GUI
+-------------
+Dashboard       — today's counts and activity feed.
+Register        — enrol a new face; click "Start camera", enter a name,
+                  then "Capture" and look at the lens until the bar fills.
+Live Attendance — choose a session name and late-after time (HH:MM),
+                  click "Start session". Recognised faces are marked
+                  automatically. "End session" closes the session and
+                  marks any unseen registered students as absent.
+Reports         — filter by date / status, switch to a per-student
+                  summary, export CSV.
+Students        — list and remove enrolled people.
+Settings        — tune cosine threshold, frame scale, sample count,
+                  default late-after time (in-memory; persist by
+                  editing config.py).
+
+
+CONFIGURATION  (config.py)
+--------------------------
+COSINE_THRESHOLD     = 0.40    Lower = stricter face match
+FRAME_SCALE          = 0.75    Smaller = faster but less accurate
+MIN_SAMPLES          = 20      Frames captured during registration
+DEFAULT_LATE_AFTER   = "09:15" HH:MM after which a person is "late"
+DEFAULT_SESSION_NAME = "Class"
+
+
+FILES CREATED AT RUNTIME
+------------------------
+data/attendance.db              — SQLite attendance database
+data/encodings/known_faces.pkl  — Stored face encodings
+attendance_*.csv                — Exported reports
+
+
+TIPS
+----
+- Good even lighting beats expensive cameras.
+- Face the camera directly and stay 30–60 cm away during registration.
+- If you wear glasses sometimes, register once with and once without
+  (use distinct names like "Alice" and "Alice_glasses", or re-register).
+- First recognition after launch is slow — the model takes a few
+  seconds to load.

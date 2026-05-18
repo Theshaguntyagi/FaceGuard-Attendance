@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual Environment
+venv/
+.env/
+.env
+
+# VS Code
+.vscode/
+
+# DeepFace / Models
+weights/
+models/
+
+# Database
+*.db
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
